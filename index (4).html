@@ -1,0 +1,202 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organic Pollutant Awareness Assignment: Bisphenol A (BPA)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #e8f5e9;
+        }
+        header {
+            background: #2e7d32;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+        nav {
+            background: #4caf50;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #2e7d32;
+            border-bottom: 2px solid #4caf50;
+            padding-bottom: 0.5rem;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 1rem;
+            border-left: 4px solid #4caf50;
+            font-size: 1.1em;
+            margin: 1rem 0;
+            white-space: pre-wrap;
+        }
+        ul {
+            margin-left: 2rem;
+        }
+        footer {
+            background: #2e7d32;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Organic Pollutant Awareness Assignment: Bisphenol A (BPA)</h1>
+    </header>
+    <nav>
+        <a href="#identification">Identification</a>
+        <a href="#functional-groups">Functional Groups</a>
+        <a href="#source">Source</a>
+        <a href="#properties">Properties</a>
+        <a href="#impact">Impact</a>
+        <a href="#safety">Safety Issues</a>
+        <a href="#disposal">Disposal Issues</a>
+        <a href="#catholic-perspective">Catholic Perspective</a>
+    </nav>
+    <div class="container">
+        <section id="identification">
+            <h2>Identification of the Organic Compound</h2>
+            <p>The organic pollutant chosen is <strong>Bisphenol A (BPA)</strong>. Its chemical formula is <strong>C15H16O2</strong>. BPA is a synthetic organic compound used primarily in the production of polycarbonate plastics and epoxy resins, found in many consumer products.</p>
+            <p><strong>Molecular Structure:</strong></p>
+            <pre>
+            OH - Benzene - C - Benzene - OH
+                   |  |
+                  CH3 CH3
+            </pre>
+            <p>The structure shows two benzene rings connected by a central carbon (C) with two methyl groups (CH3), each benzene ring having an OH group at the top.</p>
+        </section>
+        <section id="functional-groups">
+            <h2>Functional Groups</h2>
+            <p>BPA contains the following functional groups, which define its chemical behavior:</p>
+            <ul>
+                <li><strong>Phenol groups (-OH):</strong> Two hydroxyl groups attached to aromatic benzene rings, enabling polymer formation.</li>
+                <li><strong>Aromatic rings:</strong> Two benzene rings, providing structural stability.</li>
+                <li><strong>Alkyl group:</strong> A central carbon atom bonded to two methyl groups (-CH3), contributing to hydrophobicity.</li>
+            </ul>
+        </section>
+        <section id="source">
+            <h2>Source of the Pollutant</h2>
+            <p>BPA is found in:</p>
+            <ul>
+                <li><strong>Polycarbonate plastics:</strong> Used in water bottles, food containers, and medical devices.</li>
+                <li><strong>Epoxy resins:</strong> Lining of food cans, bottle tops, and water pipes.</li>
+                <li><strong>Thermal paper:</strong> Receipts and tickets.</li>
+                <li>BPA enters the environment through manufacturing, leaching from products, and improper disposal.</li>
+            </ul>
+        </section>
+        <section id="properties">
+            <h2>Chemical and Physical Properties</h2>
+            <p>BPA belongs to the bisphenol family. Key properties include:</p>
+            <ul>
+                <li><strong>Molecular Weight:</strong> 228.29 g/mol</li>
+                <li><strong>Melting Point:</strong> 158–159°C</li>
+                <li><strong>Boiling Point:</strong> 360°C</li>
+                <li><strong>Solubility:</strong> Poorly soluble in water (120–300 mg/L at 25°C), soluble in organic solvents.</li>
+                <li><strong>Stability:</strong> Stable under normal conditions but leaches when heated or exposed to acidic/alkaline conditions.</li>
+            </ul>
+        </section>
+        <section id="impact">
+            <h2>Impact on Health, Society, and the Environment</h2>
+            <p><strong>Health:</strong> BPA is an endocrine disruptor, mimicking estrogen, potentially causing reproductive issues, increased risk of cancers (e.g., breast, prostate), developmental problems in children, hormonal imbalances affecting metabolism, potential links to obesity and diabetes with prolonged exposure, and possible immune system disruptions.</p>
+            <p><strong>Society:</strong> Public concern has led to bans (e.g., baby bottles in Canada, EU) and a shift toward BPA-free products, with growing consumer demand for safer materials influencing industry standards, prompting research into alternative chemicals, and sparking debates on regulatory policies.</p>
+            <p><strong>Environment:</strong> BPA persists in soil and water, disrupting aquatic life, bioaccumulating in ecosystems, contributing to long-term contamination of natural habitats, posing risks to wildlife reproduction and biodiversity, and affecting the food chain through contaminated water sources.</p>
+        </section>
+        <section id="safety">
+            <h2>Safety Issues (WHMIS)</h2>
+            <p>Under WHMIS, BPA is classified as:</p>
+            <ul>
+                <li><strong>Hazard Class:</strong> Skin and eye irritant; potential reproductive toxin.</li>
+                <li><strong>Handling Precautions:</strong> Use gloves, eye protection, and ventilation in industrial settings.</li>
+                <li><strong>Labeling:</strong> Containers require hazard symbols for health risks.</li>
+            </ul>
+        </section>
+        <section id="disposal">
+            <h2>Disposal Issues</h2>
+            <p>Improper disposal contributes to environmental pollution. Recommendations include:</p>
+            <ul>
+                <li><strong>Recycling:</strong> Use designated programs for plastics to prevent leaching.</li>
+                <li><strong>Incineration:</strong> Controlled high-temperature incineration to minimize byproducts.</li>
+                <li><strong>Avoid Landfills:</strong> BPA can contaminate groundwater.</li>
+            </ul>
+        </section>
+        <section id="catholic-perspective">
+            <h2>Catholic Perspective on Environmental Impact</h2>
+            <p>From a Catholic perspective, BPA’s environmental harm conflicts with stewardship of God’s creation, according to the Vatican. Pollution from BPA endangers ecosystems and human health, urging Catholics to advocate for sustainable practices, reduce harmful chemical use, and promote ecological justice. This aligns with the call to protect the poor and vulnerable, who are disproportionately affected by pollution, and to foster a sense of communal responsibility to preserve the Earth for future generations. Prayer and education within parishes can also inspire action against such environmental threats.</p>
+        </section>
+    </div>
+    <footer>
+        <p></p>
+    </footer>
+</body>
+</html>
